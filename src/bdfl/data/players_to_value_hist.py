@@ -3,8 +3,8 @@ import ast
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-from bdfl.data.utils import snake_case_columns
 from tqdm import tqdm
+from bdfl.utils import pandas_io
 
 
 def get_value_history(player_slug: str):
@@ -34,7 +34,7 @@ def get_value_history(player_slug: str):
 if __name__ == "__main__":
     interim_path = "data/processed/history_cache.csv"
     hist_path = "data/processed/ktc_value_histories_20240929.csv"
-    players = snake_case_columns(pd.read_csv("data/raw/ktc_players.csv"))
+    players = pandas_io.file_to_df("data/raw/ktc_players.csv").head(3)
     relevant_cols = [
         "player_name",
         "slug",

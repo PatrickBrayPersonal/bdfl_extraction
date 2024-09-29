@@ -28,7 +28,7 @@ opinion_cols = [
     "positionalTier",
 ]
 players.rename(columns={col: f"{col}_ktc" for col in opinion_cols}, inplace=True)
-
+players = players[players["rookie"]]
 
 players = players[
     [
@@ -52,5 +52,4 @@ players = players[
     ]
 ]
 
-
-players.to_csv("data/processed/ktc_players.csv", index=False)
+players.to_csv("data/processed/bdfl_draftguide.csv", index=False)
