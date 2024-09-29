@@ -9,18 +9,20 @@ from datetime import datetime
 import os
 from inflection import underscore
 
+
 def _snake_case_columns(df):
     # Convert column names to snake case using inflection.underscore
     new_columns = [underscore(col) for col in df.columns]
-    
-    
+
     # Create a new DataFrame with snake case column names
     new_df = df.copy()
     new_df.columns = new_columns
-    
+
     # Check for duplicates
     if new_df.columns.duplicated().any():
-        raise ValueError(f"Converting to snake case resulted in duplicate column names {new_df.columns.duplicated()}")
+        raise ValueError(
+            f"Converting to snake case resulted in duplicate column names {new_df.columns.duplicated()}"
+        )
     return new_df
 
 
@@ -59,7 +61,7 @@ def file_to_df(path: str, snake_columns=True, **kwargs):
     Raises:
         ValueError: value error if path does not include registered tag
     """
-    
+
     funcs = {
         r".*\.parquet": pd.read_parquet,
         r".*\.p": pd.read_pickle,
@@ -75,4 +77,3 @@ def file_to_df(path: str, snake_columns=True, **kwargs):
     raise ValueError(
         f"{path} does not match a known file pattern {', '.join(list(funcs.keys()))}"
     )
-
