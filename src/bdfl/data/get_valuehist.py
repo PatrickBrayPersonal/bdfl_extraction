@@ -7,7 +7,7 @@ from tqdm import tqdm
 from bdfl.utils import pandas_io
 from omegaconf import OmegaConf
 from bdfl.data.get_players import get_players
-from bdfl.data.cache import disk_cache
+from bdfl.utils.cache import disk_cache
 
 
 @disk_cache("data/cache/_get_player_value_hist", expiration=86400)
