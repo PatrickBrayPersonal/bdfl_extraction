@@ -8,15 +8,15 @@ from bdfl.utils import pandas_io
 
 def get_draft_guide(players: pd.DataFrame, columns: list):
     players = players.copy()
-    players = players.drop(columns=["superflexValues"])
-
+    players = players.drop(columns=["superflex_values"])
     players = pd.concat(
         [
-            players.drop(["oneQBValues"], axis=1),
-            players["oneQBValues"].apply(pd.Series),
+            players.drop(["one_qb_values"], axis=1),
+            players["one_qb_values"].apply(pd.Series),
         ],
         axis=1,
     )
+    players = pandas_io.columns_to_snake(players)
 
     players["age"] = (
         datetime.now().timestamp() - players["birthday"].fillna(0).astype(int)

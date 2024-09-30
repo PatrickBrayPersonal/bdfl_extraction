@@ -19,16 +19,16 @@ def snake_case_columns(func):
     def wrapper(*args, **kwargs):
         for arg in list(args) + list(kwargs.values()):
             if isinstance(arg, pd.DataFrame):
-                arg = _snake_case_columns(arg)
+                arg = columns_to_snake(arg)
         output = func(*args, **kwargs)
         if isinstance(output, pd.DataFrame):
-            output = _snake_case_columns(output)
+            output = columns_to_snake(output)
         return output
 
     return wrapper
 
 
-def _snake_case_columns(df):
+def columns_to_snake(df):
     # Convert column names to snake case using inflection.underscore
     new_columns = [underscore(col) for col in df.columns]
 
@@ -92,7 +92,7 @@ def read(path: str, snake_columns=True, **kwargs):
         if match(pattern, path) is not None:
             df = func(path, **kwargs)
             if snake_columns:
-                df = _snake_case_columns(df)
+                df = columns_to_snake(df)
             return df
     raise ValueError(
         f"{path} does not match a known file pattern {', '.join(list(funcs.keys()))}"

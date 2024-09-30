@@ -1,7 +1,7 @@
 import invoke
 from bdfl.utils import genlaunch
 
-DIRS = ["src", "tests", "scripts", "notebooks"]
+DIRS = ["src", "tests"]
 
 def _run(c, command):
     print(">>", command)

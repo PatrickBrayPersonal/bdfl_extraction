@@ -1,20 +1,20 @@
 columns:
-  - playerName
+  - player_name
   - selected
   - notes
   - value
-  - rookieRank
-  - rookieTier
-  - rookiePositionalRank
-  - rookiePositionalTier
-  - positionalRank
-  - positionalTier
+  - rookie_rank
+  - rookie_tier
+  - rookie_positional_rank
+  - rookie_positional_tier
+  - positional_rank
+  - positional_tier
   - position
   - age
   - team
   - college
-  - pickRound
-  - pickNum
+  - pick_round
+  - pick_num
 out:
   path: data/processed/draft_guide.csv
   add_datetime: true
