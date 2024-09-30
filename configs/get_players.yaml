@@ -1,0 +1,3 @@
+out:
+  path: data/raw/ktc_players.csv
+  index: false

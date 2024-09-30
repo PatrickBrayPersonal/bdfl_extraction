@@ -8,6 +8,24 @@ import pandas as pd
 from datetime import datetime
 import os
 from inflection import underscore
+from loguru import logger
+
+
+def snake_case_columns(func):
+    """
+    Decorator for functions to receive and/or return dataframes only with snakecase columns
+    """
+
+    def wrapper(*args, **kwargs):
+        for arg in list(args) + list(kwargs.values()):
+            if isinstance(arg, pd.DataFrame):
+                arg = _snake_case_columns(arg)
+        output = func(*args, **kwargs)
+        if isinstance(output, pd.DataFrame):
+            output = _snake_case_columns(output)
+        return output
+
+    return wrapper
 
 
 def _snake_case_columns(df):
@@ -35,7 +53,7 @@ def _insert_datetime_before_filetype(filepath: str) -> os.path:
     return new_filepath
 
 
-def df_to_file(df: pd.DataFrame, path: str, add_datetime: bool = False, **kwargs):
+def write(df: pd.DataFrame, path: str, add_datetime: bool = False, **kwargs):
     funcs = {
         r".*\.parquet": df.to_parquet,
         r".*\.p": df.to_pickle,
@@ -49,18 +67,20 @@ def df_to_file(df: pd.DataFrame, path: str, add_datetime: bool = False, **kwargs
     for pattern, func in funcs.items():
         if match(pattern, path) is not None:
             func(path, **kwargs)
+            logger.info(f"Wrote df to {path}")
             return True
     raise ValueError(
         f"{path} does not match a known file pattern {', '.join(list(funcs.keys()))}"
     )
 
 
-def file_to_df(path: str, snake_columns=True, **kwargs):
+def read(path: str, snake_columns=True, **kwargs):
     """read a file to a DataFrame based on the file extension
 
     Raises:
         ValueError: value error if path does not include registered tag
     """
+    logger.info(f"Reading df from {path}...")
 
     funcs = {
         r".*\.parquet": pd.read_parquet,

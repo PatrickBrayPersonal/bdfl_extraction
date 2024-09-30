@@ -1,0 +1,20 @@
+get_value_hist:
+  head: 10
+  relevant_cols:
+    - player_name
+    - slug
+    - position
+    - team
+    - age
+    - birthday
+    - height_feet
+    - height_inches
+    - weight
+    - draft_year
+    - seasons_experience
+    - pick_round
+    - pick_num
+out:
+  path: data/processed/ktc_value_histories.csv
+  add_datetime: true
+  index: false

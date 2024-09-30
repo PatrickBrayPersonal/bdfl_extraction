@@ -1,0 +1,21 @@
+columns:
+  - playerName
+  - selected
+  - notes
+  - value
+  - rookieRank
+  - rookieTier
+  - rookiePositionalRank
+  - rookiePositionalTier
+  - positionalRank
+  - positionalTier
+  - position
+  - age
+  - team
+  - college
+  - pickRound
+  - pickNum
+out:
+  path: data/processed/draft_guide.csv
+  add_datetime: true
+  index: false
