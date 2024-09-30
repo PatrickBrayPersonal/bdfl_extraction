@@ -22,6 +22,22 @@ def get_players() -> pd.DataFrame:
     player_string = player_string.replace("true", "True")
 
     players = pd.DataFrame(ast.literal_eval(player_string))
+    players = _one_qb_values_only(players)
+    return players
+
+
+@pandas_io.snake_case_columns
+def _one_qb_values_only(players: pd.DataFrame):
+    players = players.copy()
+    players = players.drop(columns=["superflex_values"])
+    players = pd.concat(
+        [
+            players.drop(["one_qb_values"], axis=1),
+            players["one_qb_values"].apply(pd.Series),
+        ],
+        axis=1,
+    )
+    players = pandas_io.columns_to_snake(players)
     return players
 
 

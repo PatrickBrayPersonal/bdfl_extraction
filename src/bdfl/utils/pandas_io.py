@@ -17,9 +17,12 @@ def snake_case_columns(func):
     """
 
     def wrapper(*args, **kwargs):
-        for arg in list(args) + list(kwargs.values()):
-            if isinstance(arg, pd.DataFrame):
-                arg = columns_to_snake(arg)
+        args = [columns_to_snake(arg) for arg in args if isinstance(arg, pd.DataFrame)]
+        kwargs = {
+            k: columns_to_snake(arg)
+            for k, arg in kwargs.items()
+            if isinstance(arg, pd.DataFrame)
+        }
         output = func(*args, **kwargs)
         if isinstance(output, pd.DataFrame):
             output = columns_to_snake(output)

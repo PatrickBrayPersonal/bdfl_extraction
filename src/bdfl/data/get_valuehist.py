@@ -7,8 +7,10 @@ from tqdm import tqdm
 from bdfl.utils import pandas_io
 from omegaconf import OmegaConf
 from bdfl.data.get_players import get_players
+from bdfl.data.cache import disk_cache
 
 
+@disk_cache("data/cache/_get_player_value_hist", expiration=86400)
 def _get_player_value_hist(player_slug: str):
     # Send a GET request to the website
     response = requests.get(
@@ -35,8 +37,9 @@ def _get_player_value_hist(player_slug: str):
 
 
 def get_value_hist(players: pd.DataFrame, relevant_cols: list, head: int = 0):
+    players = players.copy()
     if head > 0:
-        players = players.head(head)
+        players = players.sort_values("value", ascending=False).head(head)
     value_hists = [
         _get_player_value_hist(slug)
         for slug in tqdm(players["slug"], desc="Processing players")

@@ -2,9 +2,11 @@ import pandas as pd
 from omegaconf import OmegaConf
 from bdfl.data.get_players import get_players
 from bdfl.data.get_valuehist import get_value_hist
+import os
 
 
 def test_get_value_hist():
+    os.environ["CACHE"] = "false"
     cfg = OmegaConf.load("configs/get_valuehist.yaml")
     cfg.get_value_hist.head = 2
     players = get_players()
