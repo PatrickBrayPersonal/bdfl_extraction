@@ -30,7 +30,7 @@ def get_draft_guide(players: pd.DataFrame, columns: list):
 
 
 if __name__ == "__main__":
-    cfg = OmegaConf.load("configs/players_to_draftguide.yaml")
+    cfg = OmegaConf.load("configs/get_draftguide.yaml")
     players = get_players()
     draft_guide = get_draft_guide(players, columns=cfg.columns)
     pandas_io.write(draft_guide, **cfg.out)

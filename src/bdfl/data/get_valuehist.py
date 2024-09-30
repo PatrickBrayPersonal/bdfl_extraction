@@ -47,7 +47,7 @@ def get_value_hist(players: pd.DataFrame, relevant_cols: list, head: int = 0):
 
 
 if __name__ == "__main__":
-    cfg = OmegaConf.load("configs/players_to_value_hist.yaml")
+    cfg = OmegaConf.load("configs/get_valuehist.yaml")
     players = get_players()
     value_hist = get_value_hist(players, **cfg.get_value_hist)
     pandas_io.write(value_hist, **cfg.out)
