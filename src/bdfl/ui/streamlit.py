@@ -32,7 +32,8 @@ st.title("Value Spike Analysis")
 
 # File uploader
 uploaded_file = st.file_uploader("Upload CSV file", type=['csv'])
-
+if uploaded_file is None:
+    uploaded_file = "data/processed/ktc_value_histories_20241229-122823.csv"
 if uploaded_file is not None:
     # Load data
     df = pd.read_csv(uploaded_file)
