@@ -1,5 +1,5 @@
 get_value_hist:
-  head: 1
+  head: 0
   relevant_cols:
     - player_name
     - slug
