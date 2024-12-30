@@ -42,11 +42,7 @@ def app():
     # Load data
     df = pd.read_csv(uploaded_file)
 
-    # Parameters selection
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        n_steps = st.slider("Time period (days)", min_value=1, max_value=30, value=7)
+    n_steps = st.slider("Time period (days)", min_value=1, max_value=365, value=30)
     value_col = "value"
     top_n = 10
     # Calculate and display results
