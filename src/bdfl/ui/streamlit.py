@@ -33,35 +33,34 @@ st.title("Value Spike Analysis")
 # File uploader
 uploaded_file = st.file_uploader("Upload CSV file", type=['csv'])
 if uploaded_file is None:
-    uploaded_file = "data/processed/ktc_value_histories_20241229-122823.csv"
-if uploaded_file is not None:
-    # Load data
-    df = pd.read_csv(uploaded_file)
+    uploaded_file = "data/published/ktc_value_histories_20240929-221650.csv"
+# Load data
+df = pd.read_csv(uploaded_file)
+
+# Display data info
+st.write(f"Number of unique slugs: {df.slug.nunique()}")
+
+# Parameters selection
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    n_steps = st.slider("Number of steps", min_value=1, max_value=30, value=7)
+
+with col2:
+    top_n = st.slider("Number of top spikes", min_value=1, max_value=20, value=5)
+
+with col3:
+    value_col = st.selectbox("Value column", df.columns, index=df.columns.get_loc('value') if 'value' in df.columns else 0)
+
+# Calculate and display results
+if st.button("Analyze Spikes"):
+    results = find_top_n_spikes(df, value_col, 'slug', n_steps, top_n)
     
-    # Display data info
-    st.write(f"Number of unique slugs: {df.slug.nunique()}")
+    # Format the results
+    results['percent_change'] = results['percent_change'].round(2)
+    results['spike'] = results['spike'].round(2)
+    results['start_value'] = results['start_value'].round(2)
+    results['end_value'] = results['end_value'].round(2)
     
-    # Parameters selection
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        n_steps = st.slider("Number of steps", min_value=1, max_value=30, value=7)
-    
-    with col2:
-        top_n = st.slider("Number of top spikes", min_value=1, max_value=20, value=5)
-    
-    with col3:
-        value_col = st.selectbox("Value column", df.columns, index=df.columns.get_loc('value') if 'value' in df.columns else 0)
-    
-    # Calculate and display results
-    if st.button("Analyze Spikes"):
-        results = find_top_n_spikes(df, value_col, 'slug', n_steps, top_n)
-        
-        # Format the results
-        results['percent_change'] = results['percent_change'].round(2)
-        results['spike'] = results['spike'].round(2)
-        results['start_value'] = results['start_value'].round(2)
-        results['end_value'] = results['end_value'].round(2)
-        
-        st.write("Top Value Spikes:")
-        st.dataframe(results)
+    st.write("Top Value Spikes:")
+    st.dataframe(results)
