@@ -78,47 +78,24 @@ def log_dataset_stats(df: pd.DataFrame):
 
 
 
-
-def plot_aging_curve_dist(data: pd.DataFrame, output_path: str, plot_type: str = "percentiles", by: str = None):
+def plot_aging_curve_dist(data: pd.DataFrame, output_path: str, plot_type: str = "boxplot", by: str = None):
     plt.figure(figsize=(10, 6))
 
-    # Compute percentiles for each 'years_since_draft'
-    percentiles = [10, 25, 50, 75, 90]
-    grouped = data.groupby('years_since_draft')['value']
+    # Plot distribution using seaborn
+    if plot_type == "histogram":
+        # Use hue for differentiation (if 'by' is provided)
+        sns.histplot(data=data, x='value', kde=True, bins=30, hue=by)
+        plt.title('Distribution of Player Value Over Time Since Draft')
+    elif plot_type == "boxplot":
+        # Use hue for differentiation (if 'by' is provided)
+        sns.boxplot(x='years_since_draft', y='value', data=data, hue=by)
+        plt.title('Distribution of Player Value Over Time Since Draft by Group')
 
-    # Calculate the percentiles
-    percentile_values = {p: grouped.quantile(p / 100) for p in percentiles}
-
-    # Plot the percentiles (line chart)
-    sns.lineplot(x=percentile_values[50].index, y=percentile_values[50].values, label="50th Percentile (Median)", color='blue')
-
-    # Shaded regions for percentiles
-    plt.fill_between(percentile_values[50].index,
-                     percentile_values[10].values,
-                     percentile_values[90].values, 
-                     color='blue', alpha=0.1, label="10th-90th Percentile Range")
-    
-    plt.fill_between(percentile_values[50].index,
-                     percentile_values[25].values,
-                     percentile_values[75].values, 
-                     color='blue', alpha=0.3, label="25th-75th Percentile Range")
-
-    # Additional percentiles
-    plt.fill_between(percentile_values[50].index,
-                     percentile_values[10].values,
-                     percentile_values[25].values, 
-                     color='blue', alpha=0.2)
-
-    # Optional: if `by` is provided, add hue-based lines
-    if by:
-        sns.lineplot(x='years_since_draft', y='value', data=data, hue=by, ci=None)
-
-    plt.title('Distribution of Player Value Over Time Since Draft (Percentiles)')
     plt.xlabel('Years Since Draft')
     plt.ylabel('Value Distribution')
     plt.grid(True)
+    plt.xticks(range(data['years_since_draft'].min(), data['years_since_draft'].max() + 1))
     plt.tight_layout()
-    
     Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_path)
     plt.close()
