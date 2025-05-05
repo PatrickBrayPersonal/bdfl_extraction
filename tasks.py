@@ -3,9 +3,11 @@ from bdfl.utils import genlaunch
 
 DIRS = ["src", "tests"]
 
+
 def _run(c, command):
     print(">>", command)
     c.run(command)
+
 
 @invoke.task
 def launch(c, dirs: list = []):
@@ -15,6 +17,7 @@ def launch(c, dirs: list = []):
     if dirs == []:
         dirs = DIRS
     genlaunch(DIRS)
+
 
 @invoke.task
 def format(c, dirs: list = []):
