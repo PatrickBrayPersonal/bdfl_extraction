@@ -17,6 +17,10 @@ def preprocess_scores(df: pd.DataFrame) -> pd.DataFrame:
     df["draft_date"] = pd.to_datetime(df["draft_year"].astype(str) + "-04-15")
     df["time_since_draft"] = df["date"] - df["draft_date"]
     df["years_since_draft"] = df["time_since_draft"].dt.days // 365
+    dataset_date = df["date"].max()
+    df["age_at_draft"] = (
+        df["age"] * 365 + (df["draft_date"] - dataset_date).dt.days
+    ) // 365
     return df
 
 
@@ -77,24 +81,27 @@ def log_dataset_stats(df: pd.DataFrame):
     print("=====================\n")
 
 
-
-def plot_aging_curve_dist(data: pd.DataFrame, output_path: str, plot_type: str = "boxplot", by: str = None):
+def plot_aging_curve_dist(
+    data: pd.DataFrame, output_path: str, plot_type: str = "boxplot", by: str = None
+):
     plt.figure(figsize=(10, 6))
 
     # Plot distribution using seaborn
     if plot_type == "histogram":
         # Use hue for differentiation (if 'by' is provided)
-        sns.histplot(data=data, x='value', kde=True, bins=30, hue=by)
-        plt.title('Distribution of Player Value Over Time Since Draft')
+        sns.histplot(data=data, x="value", kde=True, bins=30, hue=by)
+        plt.title("Distribution of Player Value Over Time Since Draft")
     elif plot_type == "boxplot":
         # Use hue for differentiation (if 'by' is provided)
-        sns.boxplot(x='years_since_draft', y='value', data=data, hue=by)
-        plt.title('Distribution of Player Value Over Time Since Draft by Group')
+        sns.boxplot(x="years_since_draft", y="value", data=data, hue=by)
+        plt.title("Distribution of Player Value Over Time Since Draft by Group")
 
-    plt.xlabel('Years Since Draft')
-    plt.ylabel('Value Distribution')
+    plt.xlabel("Years Since Draft")
+    plt.ylabel("Value Distribution")
     plt.grid(True)
-    plt.xticks(range(data['years_since_draft'].min(), data['years_since_draft'].max() + 1))
+    plt.xticks(
+        range(data["years_since_draft"].min(), data["years_since_draft"].max() + 1)
+    )
     plt.tight_layout()
     Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_path)
@@ -108,6 +115,9 @@ def plot_reports(scores: pd.DataFrame, output_dir: Path):
     # By position - line plot
     avg_by_pos = compute_average_value(scores, by=["years_since_draft", "position"])
     plot_aging_curve(avg_by_pos, output_dir / "value_over_time_by_position.png")
+    # By age at draft
+    avg_by_age = compute_average_value(scores, by=["years_since_draft", "age_at_draft"])
+    plot_aging_curve(avg_by_age, output_dir / "value_over_time_by_age_at_draft.png")
 
     plot_aging_curve_dist(
         scores, output_dir / "value_distribution.png", plot_type="boxplot"
@@ -117,6 +127,12 @@ def plot_reports(scores: pd.DataFrame, output_dir: Path):
         output_dir / "value_distribution_by_position.png",
         plot_type="boxplot",
         by="position",
+    )
+    plot_aging_curve_dist(
+        scores,
+        output_dir / "value_distribution_by_age_at_draft.png",
+        plot_type="boxplot",
+        by="age_at_draft",
     )
 
 
