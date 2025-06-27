@@ -41,7 +41,7 @@ def docs(c, serve=False, port=8000):
         port: Port for the web server (default: 8000)
     """
     # Build the documentation
-    _run(c, "sphinx-build -b html docs docs/_build/html")
+    _run(c, "poetry run sphinx-build -b html docs docs/_build/html")
     
     if serve:
         import webbrowser
