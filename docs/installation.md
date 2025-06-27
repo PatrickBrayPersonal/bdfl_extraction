@@ -47,7 +47,12 @@ pytest .
 
 # Check if scripts can be imported
 python -c "from bdfl.data.get_players import get_players; print('Installation successful!')"
+
+# Test the Streamlit UI (optional)
+inv ui
 ```
+
+The Streamlit UI should open in your browser at `http://localhost:8501`.
 
 ## Development Installation
 
@@ -112,3 +117,4 @@ After successful installation:
 1. Read the [Data Scripts Guide](data-scripts.md)
 2. Review [Configuration Options](configuration.md)
 3. Try running your first data extraction script
+4. Launch the Streamlit UI with `inv ui` for interactive data analysis

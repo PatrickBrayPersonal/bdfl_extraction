@@ -22,7 +22,7 @@ BDFL is a Python package that scrapes and processes fantasy football data from K
 - Snake case column standardization
 
 ## Prerequisites
-- Python 3.10+
+- Python 3.12+
 - Poetry package manager
   - Install: `pip install poetry`
 
@@ -56,6 +56,23 @@ poetry run python src/bdfl/data/get_draftguide.py
 poetry run python src/bdfl/data/get_valuehist.py
 ```
 
+### Streamlit UI
+
+Launch the interactive web interface for data analysis:
+
+```bash
+# Start the Streamlit app (opens at http://localhost:8501)
+inv ui
+
+# Or specify a custom port
+inv ui --port 8080
+```
+
+The UI provides:
+- **Top Risers Analysis**: Upload CSV files to identify players with the biggest value increases
+- **Interactive Controls**: Adjust time periods and parameters dynamically
+- **Data Visualization**: View results in formatted tables
+
 ### Configuration
 
 Customize data extraction via YAML configs in `configs/`:
@@ -77,6 +94,9 @@ inv format
 
 # Generate VS Code launch config
 inv launch
+
+# Start the Streamlit UI application
+inv ui
 ```
 
 ## Data Sources

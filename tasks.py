@@ -32,6 +32,17 @@ def format(c, dirs: list = []):
 
 
 @invoke.task
+def ui(c, port=8501):
+    """
+    Start the Streamlit UI application
+    
+    Args:
+        port: Port for the Streamlit server (default: 8501)
+    """
+    _run(c, f"poetry run streamlit run src/bdfl/ui/app.py --server.port {port}")
+
+
+@invoke.task
 def docs(c, serve=False, port=8000):
     """
     Build Sphinx documentation from Markdown files
