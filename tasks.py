@@ -29,11 +29,3 @@ def format(c, dirs: list = []):
     for dir in dirs:
         _run(c, f"ruff format {dir}")
         _run(c, f"ruff check {dir} --fix")
-
-
-@invoke.task(format)
-def docs(c):
-    """
-    Update the documentation directory and update gh-pages from master
-    """
-    _run(c, "pdoc src/spotify_playlists -o docs")
