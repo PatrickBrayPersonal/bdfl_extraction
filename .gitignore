@@ -556,4 +556,3 @@ mlruns/
 ./.pytest_cache/
 
 docs/.obsidian
-docs/tickets
