@@ -4,7 +4,7 @@ This guide will help you set up BDFL on your system.
 
 ## Prerequisites
 
-- **Python 3.10+**: BDFL requires Python 3.10 or higher
+- **Python 3.12+**: BDFL requires Python 3.12 or higher
 - **Poetry**: Package and dependency management
 - **Git**: For cloning the repository
 
@@ -95,8 +95,8 @@ curl -sSL https://install.python-poetry.org | python3 -
 python --version
 
 # Use pyenv to manage Python versions if needed
-pyenv install 3.10.0
-pyenv local 3.10.0
+pyenv install 3.12.0
+pyenv local 3.12.0
 ```
 
 **Permission errors:**

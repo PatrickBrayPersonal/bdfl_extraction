@@ -25,14 +25,8 @@ extensions = [
 myst_enable_extensions = [
     "colon_fence",
     "deflist",
-    "dollarmath",
-    "fieldlist",
     "html_admonition",
     "html_image",
-    "linkify",
-    "replacements",
-    "smartquotes",
-    "strikethrough",
     "substitution",
     "tasklist",
 ]
@@ -49,7 +43,7 @@ html_static_path = ['_static']
 # -- Source file suffixes ----------------------------------------------------
 source_suffix = {
     '.rst': None,
-    '.md': 'myst_parser',
+    '.md': None,
 }
 
 # -- Master document ---------------------------------------------------------
