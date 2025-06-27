@@ -1,4 +1,4 @@
-d# API Reference
+# API Reference
 
 This document provides detailed information about BDFL's functions, classes, and modules.
 

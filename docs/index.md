@@ -2,12 +2,16 @@
 
 Welcome to the BDFL (Fantasy Football Data Extraction) documentation. This package provides tools for scraping and analyzing fantasy football data from KeepTradeCut (KTC).
 
-## Quick Start
+```{toctree}
+:maxdepth: 2
+:caption: Contents:
 
-1. **Installation**: See [Installation Guide](installation.md)
-2. **Data Scripts**: Learn about [Data Collection Scripts](data-scripts.md)
-3. **Configuration**: Understand [Configuration Files](configuration.md)
-4. **API Reference**: Browse the [API Documentation](api-reference.md)
+installation
+data-scripts
+configuration
+api-reference
+troubleshooting
+```
 
 ## What is BDFL?
 
@@ -50,8 +54,10 @@ data/
 └── cache/          # Cached API responses
 ```
 
-## Getting Help
+## Quick Start
 
-- Check the [FAQ](faq.md) for common questions
-- Review [Troubleshooting](troubleshooting.md) for common issues
-- See [Contributing](contributing.md) for development guidelines
+1. **Installation**: See {doc}`installation`
+2. **Data Scripts**: Learn about {doc}`data-scripts`
+3. **Configuration**: Understand {doc}`configuration`
+4. **API Reference**: Browse the {doc}`api-reference`
+5. **Troubleshooting**: Get help with {doc}`troubleshooting`
