@@ -3,7 +3,7 @@
 import pytest
 import pandas as pd
 from unittest.mock import Mock, patch
-from bdfl.mfl_extract.client import MFLClient
+from bdfl.data.mfl_extract.client import MFLClient
 
 
 class TestMFLClient:
@@ -21,7 +21,7 @@ class TestMFLClient:
             with pytest.raises(ValueError, match="League ID must be provided"):
                 MFLClient()
     
-    @patch('bdfl.mfl_extract.client.requests.get')
+    @patch('bdfl.data.mfl_extract.client.requests.get')
     def test_get_rosters_success(self, mock_get: Mock) -> None:
         """Test successful roster retrieval."""
         # Mock API response
@@ -53,7 +53,7 @@ class TestMFLClient:
         assert df.iloc[0]['player_id'] == "12345"
         assert df.iloc[0]['status'] == "ROSTER"
     
-    @patch('bdfl.mfl_extract.client.requests.get')
+    @patch('bdfl.data.mfl_extract.client.requests.get')
     def test_get_league_info_success(self, mock_get: Mock) -> None:
         """Test successful league info retrieval."""
         # Mock API response
@@ -75,7 +75,7 @@ class TestMFLClient:
         assert info["name"] == "Test League"
         assert info["year"] == "2024"
     
-    @patch('bdfl.mfl_extract.client.requests.get')
+    @patch('bdfl.data.mfl_extract.client.requests.get')
     def test_get_franchises_success(self, mock_get: Mock) -> None:
         """Test successful franchise retrieval."""
         # Mock API response
@@ -114,7 +114,7 @@ class TestMFLClient:
         assert df.iloc[1]['franchise_id'] == "0002"
         assert df.iloc[1]['franchise_name'] == "Team Beta"
     
-    @patch('bdfl.mfl_extract.client.requests.get')
+    @patch('bdfl.data.mfl_extract.client.requests.get')
     def test_get_players_success(self, mock_get: Mock) -> None:
         """Test successful players retrieval."""
         # Mock API response
@@ -159,7 +159,7 @@ class TestMFLClient:
         assert df.iloc[1]['player_name'] == "Barkley, Saquon"
         assert df.iloc[1]['position'] == "RB"
     
-    @patch('bdfl.mfl_extract.client.requests.get')
+    @patch('bdfl.data.mfl_extract.client.requests.get')
     def test_get_rosters_with_player_details_success(self, mock_get: Mock) -> None:
         """Test successful enriched rosters retrieval."""
         # Mock responses for multiple API calls
@@ -240,7 +240,7 @@ class TestMFLClient:
         assert df.iloc[0]['owner_name'] == "John Doe"
         assert df.iloc[0]['status'] == "ROSTER"
     
-    @patch('bdfl.mfl_extract.client.requests.get')
+    @patch('bdfl.data.mfl_extract.client.requests.get')
     def test_get_franchises_empty_response(self, mock_get: Mock) -> None:
         """Test franchise retrieval with empty response."""
         # Mock API response without franchises
@@ -258,7 +258,7 @@ class TestMFLClient:
         assert len(df) == 0
         assert list(df.columns) == ["franchise_id", "franchise_name", "owner_name", "logo"]
     
-    @patch('bdfl.mfl_extract.client.requests.get')
+    @patch('bdfl.data.mfl_extract.client.requests.get')
     def test_get_players_single_player(self, mock_get: Mock) -> None:
         """Test players retrieval with single player (dict instead of list)."""
         # Mock API response with single player

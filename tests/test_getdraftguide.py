@@ -1,5 +1,4 @@
-from bdfl.data.get_players import get_players
-from bdfl.data.get_draftguide import get_draft_guide
+from bdfl.data.ktc_extract import get_players, get_draft_guide
 from omegaconf import OmegaConf
 import pandas as pd
 

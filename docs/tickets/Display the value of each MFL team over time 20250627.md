@@ -5,7 +5,7 @@ tags:
 # Steps
 
 ## Pull data from MFL API about a league
-create a new section of the bdfl module called `mfl_extract`
+create a new section of the bdfl.data module called `mfl_extract`
 have functions that allow other parts of the python package to use to get information about a given league.
 
 Use best practices here, I think a class makes the most sense.

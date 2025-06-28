@@ -4,7 +4,7 @@ from typing import Optional
 import pandas as pd
 from loguru import logger
 
-from bdfl.mfl_extract.client import MFLClient
+from bdfl.data.mfl_extract.client import MFLClient
 
 
 def demo_mfl_client(league_id: Optional[str] = None) -> pd.DataFrame:

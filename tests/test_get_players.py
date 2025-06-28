@@ -1,4 +1,4 @@
-from bdfl.data.get_players import get_players
+from bdfl.data.ktc_extract import get_players
 import pandas as pd
 
 
