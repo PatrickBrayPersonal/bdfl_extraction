@@ -321,3 +321,85 @@ class MFLClient:
         except Exception as e:
             logger.error(f"Failed to get players: {e}")
             raise
+    
+    def get_trades(self) -> pd.DataFrame:
+        """Get all trade transactions for the league.
+        
+        Returns:
+            DataFrame with trade information including:
+            - trade_id: Unique identifier for the trade
+            - timestamp: When the trade occurred
+            - franchise1_id: First franchise involved
+            - franchise2_id: Second franchise involved  
+            - franchise1_gave_up: What franchise1 traded away
+            - franchise2_gave_up: What franchise2 traded away
+            - expires: Trade expiration timestamp
+            - comments: Trade comments/notes
+        """
+        logger.info(f"Fetching trades for league {self.league_id}")
+        
+        try:
+            # Get trade transactions using the transactions endpoint
+            params = {
+                'TRANS_TYPE': 'TRADE'
+            }
+            
+            trade_data = self._make_request('transactions', params)
+            
+            trades_list = []
+            
+            # Check if transactions exist
+            if 'transactions' not in trade_data:
+                logger.info("No transactions found in response")
+                return pd.DataFrame(columns=[
+                    "trade_id", "timestamp", "franchise1_id", "franchise2_id",
+                    "franchise1_gave_up", "franchise2_gave_up", "expires", "comments"
+                ])
+            
+            transactions = trade_data['transactions']
+            
+            # Handle case where transactions might be a dict (single transaction) or list
+            if isinstance(transactions, dict):
+                if 'transaction' in transactions:
+                    transactions = transactions['transaction']
+                    if isinstance(transactions, dict):
+                        transactions = [transactions]
+                else:
+                    transactions = []
+            
+            logger.debug(f"Found {len(transactions)} transactions")
+            
+            for transaction in transactions:
+                # Extract trade information
+                trade_info = {
+                    "trade_id": transaction.get("id", ""),
+                    "timestamp": transaction.get("timestamp", ""),
+                    "franchise1_id": transaction.get("franchise1", ""),
+                    "franchise2_id": transaction.get("franchise2", ""),
+                    "franchise1_gave_up": transaction.get("franchise1_gave_up", ""),
+                    "franchise2_gave_up": transaction.get("franchise2_gave_up", ""),
+                    "expires": transaction.get("expires", ""),
+                    "comments": transaction.get("comments", "")
+                }
+                
+                trades_list.append(trade_info)
+            
+            df = pd.DataFrame(trades_list)
+            
+            # Ensure DataFrame has proper columns even when empty
+            if df.empty:
+                df = pd.DataFrame(columns=[
+                    "trade_id", "timestamp", "franchise1_id", "franchise2_id",
+                    "franchise1_gave_up", "franchise2_gave_up", "expires", "comments"
+                ])
+            
+            logger.info(f"Retrieved {len(df)} trades")
+            return df
+            
+        except Exception as e:
+            logger.error(f"Failed to get trades: {e}")
+            # Return empty DataFrame if trades not available
+            return pd.DataFrame(columns=[
+                "trade_id", "timestamp", "franchise1_id", "franchise2_id",
+                "franchise1_gave_up", "franchise2_gave_up", "expires", "comments"
+            ])
