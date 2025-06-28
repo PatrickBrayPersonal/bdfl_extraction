@@ -16,6 +16,7 @@ globs: **/*.py, src/**/*.py, tests/**/*.py
 ## Code Style
 - Follow Black code formatting
 - Use isort for import sorting
+- **Don't use relative imports** always install repo as a python package
 - Follow PEP 8 naming conventions:
   - snake_case for functions and variables
   - PascalCase for classes

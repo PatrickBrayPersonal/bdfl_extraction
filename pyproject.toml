@@ -20,6 +20,7 @@ fastparquet = "^2024.5.0"
 tqdm = "^4.66.5"
 streamlit = "^1.41.1"
 seaborn = "^0.13.2"
+requests = "^2.32.4"
 
 
 [tool.poetry.group.dev.dependencies]
