@@ -6,6 +6,25 @@ import requests
 import pandas as pd
 from loguru import logger
 from dotenv import load_dotenv
+from bdfl.utils.cache import disk_cache
+
+load_dotenv()
+
+
+@disk_cache("data/cache/mfl_extract/api_requests", expiration=43200)  # 12 hours
+def _cached_mfl_request(url: str, params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    """Make a cached request to the MFL API.
+    
+    Args:
+        url: Full URL to request
+        params: Optional query parameters
+        
+    Returns:
+        JSON response as dictionary
+    """
+    response = requests.get(url, params=params)
+    response.raise_for_status()
+    return response.json()
 
 
 class MFLClient:
@@ -37,39 +56,36 @@ class MFLClient:
         """Make a request to the MFL API.
         
         Args:
-            endpoint: API endpoint (e.g., 'rosters', 'league')
-            params: Additional query parameters
+            endpoint: API endpoint (e.g., 'rosters', 'players')
+            params: Optional additional parameters
             
         Returns:
             JSON response as dictionary
-            
-        Raises:
-            requests.RequestException: If API request fails
         """
         if params is None:
             params = {}
         
         # Add required parameters
         params.update({
-            "TYPE": endpoint,
-            "L": self.league_id,
-            "JSON": "1"
+            'L': self.league_id,
+            'JSON': '1'
         })
+        
+        # Add endpoint type
+        params['TYPE'] = endpoint
         
         url = f"{self.base_url}/{self.year}/export"
         
         logger.debug(f"Making MFL API request: {url} with params: {params}")
         
         try:
-            response = requests.get(url, params=params, timeout=30)
-            response.raise_for_status()
-            
-            data = response.json()
-            logger.debug(f"Received response with keys: {list(data.keys()) if isinstance(data, dict) else 'non-dict response'}")
+            # Use the cached function for the actual HTTP request
+            data = _cached_mfl_request(url, params)
+            logger.debug(f"Received response with keys: {list(data.keys())}")
             
             return data
             
-        except requests.RequestException as e:
+        except requests.exceptions.RequestException as e:
             logger.error(f"MFL API request failed: {e}")
             raise
     
