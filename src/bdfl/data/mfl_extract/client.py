@@ -374,7 +374,7 @@ class MFLClient:
                 trade_info = {
                     "trade_id": transaction.get("id", ""),
                     "timestamp": transaction.get("timestamp", ""),
-                    "franchise1_id": transaction.get("franchise1", ""),
+                    "franchise1_id": transaction.get("franchise", ""),  # API uses 'franchise' for franchise1
                     "franchise2_id": transaction.get("franchise2", ""),
                     "franchise1_gave_up": transaction.get("franchise1_gave_up", ""),
                     "franchise2_gave_up": transaction.get("franchise2_gave_up", ""),
