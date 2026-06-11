@@ -1,25 +1,133 @@
-bdfl
-==============================
-patrick bray
+# BDFL - Fantasy Football Data Extraction
 
-Extract useful data for fantasy football
+**Author:** Patrick Bray  
+**Purpose:** Extract and analyze useful data for fantasy football decision-making
 
+## Overview
+
+BDFL is a Python package that scrapes and processes fantasy football data from KeepTradeCut (KTC), providing tools for dynasty league analysis, draft preparation, and player valuation tracking.
+
+## Features
+
+### Data Collection Scripts
+- **Player Data**: Scrape current dynasty rankings and player information from KTC
+- **Draft Guide**: Generate rookie draft guides with customizable player attributes
+- **Value History**: Track historical player value changes over time with caching
+
+### Key Capabilities
+- Web scraping with BeautifulSoup and requests
+- Configurable data extraction via YAML configs
+- Automatic data caching to minimize API calls
+- CSV export with timestamped filenames
+- Snake case column standardization
 
 ## Prerequisites
-- Python
-- poetry 
-  - `pip install poetry`
+- Python 3.12+
+- Poetry package manager
+  - Install: `pip install poetry`
 
 ## Installation
-1. Create your environment
-`poetry install`
-`poetry shell`
-2. Test the package
-`pytest .`
 
-This repo uses [poetry](https://python-poetry.org/docs/)
-Add dependencies using `poetry add`
+1. **Set up environment:**
+   ```bash
+   poetry install
+   poetry shell
+   ```
 
-## Invoke Commands
-This repository uses [invoke](https://www.pyinvoke.org/) to manage its command-line workflows.
-Enter `inv -l` to see the list of commands
+2. **Test installation:**
+   ```bash
+   pytest .
+   ```
+
+## Usage
+
+### Data Extraction Scripts
+
+Run individual data collection scripts:
+
+```bash
+# Get current player rankings and data
+poetry run python src/bdfl/data/get_players.py
+
+# Generate rookie draft guide
+poetry run python src/bdfl/data/get_draftguide.py
+
+# Collect player value histories (with caching)
+poetry run python src/bdfl/data/get_valuehist.py
+```
+
+### Streamlit UI
+
+Launch the interactive web interface for data analysis:
+
+```bash
+# Start the Streamlit app (opens at http://localhost:8501)
+inv ui
+
+# Or specify a custom port
+inv ui --port 8080
+```
+
+The UI provides:
+- **Top Risers Analysis**: Upload CSV files to identify players with the biggest value increases
+- **Interactive Controls**: Adjust time periods and parameters dynamically
+- **Data Visualization**: View results in formatted tables
+
+### Configuration
+
+Customize data extraction via YAML configs in `configs/`:
+
+- `get_players.yaml`: Output settings for player data
+- `get_draftguide.yaml`: Column selection for draft guides
+- `get_valuehist.yaml`: Player filtering and output for value histories
+
+### Invoke Commands
+
+This repository uses [invoke](https://www.pyinvoke.org/) for task management:
+
+```bash
+# See available commands
+inv -l
+
+# Format code with ruff
+inv format
+
+# Generate VS Code launch config
+inv launch
+
+# Start the Streamlit UI application
+inv ui
+```
+
+## Data Sources
+
+- **KeepTradeCut**: Dynasty player rankings and historical values
+- **Output**: Processed CSV files in `data/processed/` with timestamps
+- **Caching**: Player value histories cached in `data/cache/` (24hr expiration)
+
+## Project Structure
+
+```
+src/bdfl/
+├── data/           # Data extraction scripts
+├── model/          # ML models and analysis
+├── ui/             # User interface components
+└── utils/          # Utility functions and helpers
+
+configs/            # YAML configuration files
+data/
+├── raw/            # Raw scraped data
+├── processed/      # Cleaned and processed data
+└── cache/          # Cached API responses
+```
+
+## Dependencies
+
+**Core:** pandas, requests, beautifulsoup4, tqdm, omegaconf, hydra-core  
+**Dev:** pytest, ruff, invoke, jupyter  
+**UI:** streamlit, seaborn, plotly
+
+Manage dependencies with Poetry:
+```bash
+poetry add <package-name>
+```

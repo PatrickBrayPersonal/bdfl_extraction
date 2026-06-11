@@ -1,7 +1,6 @@
 import pandas as pd
-from omegaconf import OmegaConfloo
-from bdfl.data.get_players import get_players
-from bdfl.data.get_valuehist import get_value_hist
+from omegaconf import OmegaConf
+from bdfl.data.ktc_extract import get_players, get_value_hist
 import os
 
 

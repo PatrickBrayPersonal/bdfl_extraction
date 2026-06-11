@@ -17,7 +17,7 @@ def get_players() -> pd.DataFrame:
     script = soup.select_one("body > script").string
     player_string = script.split("\n")[2]
     player_string = player_string.split("playersArray = ")[1]
-    player_string = player_string.rstrip(';\r\n')
+    player_string = player_string[0:-2]
     player_string = player_string.replace("false", "False")
     player_string = player_string.replace("true", "True")
 

@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from tqdm import tqdm
 from bdfl.utils import pandas_io
 from omegaconf import OmegaConf
-from bdfl.data.get_players import get_players
+from .players import get_players
 from bdfl.utils.cache import disk_cache
 
 
@@ -22,7 +22,7 @@ def _get_player_value_hist(player_slug: str):
     # Find the <script> tag within the <body> tag
     script = soup.select_one("body > script").string
 
-    adjacent_players = script.split("var playerOneQB = ")[1].split(";\n")[0]
+    adjacent_players = script.split("var playerOneQB = ")[1].split(";\r\n")[0]
     adjacent_players = adjacent_players.replace("false", "False").replace(
         "true", "True"
     )

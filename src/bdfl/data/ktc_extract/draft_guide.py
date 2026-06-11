@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pandas as pd
 from omegaconf import OmegaConf
-from bdfl.data.get_players import get_players
+from .players import get_players
 from bdfl.utils import pandas_io
 
 
